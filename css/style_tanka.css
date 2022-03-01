@@ -1,0 +1,259 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1&display=swap');
+
+:root {
+  --base-bg-color: #d0d0d0;
+  --block-bg-color: #ffffff;
+  --main-fg-color: #000;
+  --sub-fg-color: #aaa;
+
+  --container-height: 80vh;
+  --header-height: calc((100vh - var(--container-height)) / 5 * 3);
+  --footer-height: calc((100vh - var(--container-height)) / 5 * 2);
+
+  --fontsize-poems: calc(0.75rem + ((1vw - 4.25px) * 0.9365));
+  --font-poem: "Shippori Mincho B1", serif;
+  --font-gothic: sans-serif;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+html,
+body {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 10px;
+}
+
+p {
+  font-size: 1.6rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: var(--container-height);
+  background-color: var(--base-bg-color);
+}
+
+#outputrealm,
+#pickedrealm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: calc(var(--fontsize-poems) * 38);
+  margin: 3rem;
+  padding: 5rem;
+  color: var(--main-fg-color);
+  background-color: var(--block-bg-color);
+}
+
+/*-----------------------------------------------------------------*/
+/*responsive*/
+/*-----------------------------------------------------------------*/
+
+@media screen and (orientation: portrait) {
+  .container {
+    flex-direction: column;
+    min-height: var(--container-height);
+  }
+  #outputrealm,
+  #pickedrealm {
+    width: 90vw;
+  }
+  p.poems {
+    margin: 0.6rem auto;
+    font-family: var(--font-poem);
+    font-size: calc(10px + 1vw);
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .container {
+    min-height: var(--container-height);
+  }
+  #outputrealm,
+  #pickedrealm {
+    max-width: 40vw;
+  }
+  p.poems {
+    margin: 0.6rem auto;
+    font-family: var(--font-poem);
+    font-size: 1.15vw;
+  }
+}
+
+/*-----------------------------------------------------------------*/
+
+header {
+  display: flex;
+  align-items: center;
+  min-height: 12rem;
+  height: var(--header-height);
+  font-family: var(--font-gothic);
+  color: var(--main-fg-color);
+  background-color: var(--block-bg-color);
+}
+
+#headercontainer {
+  display: flex;
+  align-items: center;
+  margin: 1rem 4rem;
+}
+
+#headercontainer > h1 {
+  font-size: 2.4rem;
+  margin: 0 4rem 0 0;
+}
+
+#headercontainer > p {
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 8rem;
+  height: var(--footer-height);
+  color: var(--main-fg-color);
+  background-color: var(--block-bg-color);
+}
+
+#baboonOutput,
+#baboonPicked {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  height: 4.5rem;
+  margin: 2.5rem auto 0;
+  border-radius: 12px;
+  font-size: 2rem;
+  color: #212529;
+  background-color: #fff;
+  line-height: 1.6rem;
+  transition: 0.1s;
+  box-shadow: 0px 3px 0px #aaa;
+  border: 1px solid #111;
+  cursor: pointer;
+}
+
+.imgbtn {
+  padding: 0.5rem 2rem;
+}
+
+.imgbtn > img {
+  height: 3rem;
+}
+
+.btn:active,
+.pushedbtn {
+  -webkit-transform: translate(0, 3px);
+  -moz-transform: translate(0, 3px);
+  color: #000066;
+  background: #ffffff;
+  transform: translateY(3px);
+  box-shadow: none;
+  border: 1px solid #ccc;
+}
+
+.pushedbtn {
+  cursor: default;
+}
+
+.generatedpoem {
+  color: var(--main-fg-color);
+  background-color: var(--block-bg-color);
+  text-decoration: none;
+}
+
+.generatedpoem:hover {
+  text-decoration: none;
+}
+
+.storedpoem {
+  color: var(--main-fg-color);
+  background-color: var(--block-bg-color);
+  text-decoration: none;
+}
+
+.storedpoem:hover {
+  text-decoration: line-through;
+}
+
+.picker {
+  color: var(--picker-color);
+}
+
+#poemtextarea {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 1px;
+  height: 1px;
+}
+
+#copybtn {
+  display: none;
+}
+
+#help {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem;
+}
+
+#helpmessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.8rem auto;
+  color: var(--sub-fg-color);
+  line-height: 1rem;
+}
+
+#copiedmessage {
+  display: none;
+  position: fixed;
+  margin: 0;
+  color: var(--sub-fg-color);
+  animation: fade 1s ease 0s 1 alternate forwards running;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
