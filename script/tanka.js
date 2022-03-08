@@ -4,17 +4,24 @@ var pickedPoemArray = [];
 
 window.onload = function () {
   recreatePoems();
-
-  var baboonOutput = document.getElementById("baboonOutput");
-  var baboonPicked = document.getElementById("baboonPicked");
-  baboonOutput.style.minHeight = baboonOutput.clientHeight + "px";
-  baboonPicked.style.minHeight = baboonOutput.clientHeight + "px";
-
-  var outputRealm = document.getElementById("outputrealm");
-  var pickedRealm = document.getElementById("pickedrealm");
-  outputRealm.style.minHeight = outputRealm.clientHeight + "px";
-  pickedRealm.style.minHeight = outputRealm.clientHeight + "px";
+  adjustHeaderComponent();
 };
+
+function adjustHeaderComponent() {
+  const header = document.getElementById("header");
+  const header_p = header.querySelector("p");
+  const heightlimit = document.getElementById("header").clientHeight;
+  let size = parseInt(
+    window.getComputedStyle(header_p).getPropertyValue("font-size"),
+  );
+  while (
+    heightlimit <
+      header_p.getBoundingClientRect().height && size > 1
+  ) {
+    size--;
+    header_p.style.fontSize = size + "px";
+  }
+}
 
 function recreatePoems() {
   createPoems(MAX);
@@ -44,8 +51,7 @@ function showPoems() {
   var baboonPicked = document.getElementById("baboonPicked");
   if (pickedPoemArray.length == 0) {
     document.getElementById("copybtn").style.display = "none";
-    baboonPicked.innerHTML =
-      "<p id='helpmessage'>短歌をクリックしてピックアップ</p>";
+    baboonPicked.innerHTML = "<p id='helpmessage'>短歌をクリックしてピックアップ</p>";
   } else {
     document.getElementById("copybtn").style.display = "inline-block";
     baboonPicked.innerHTML = "";
@@ -99,8 +105,8 @@ function turnCopyButtonImg(push) {
     copyButtonImg.style.display = "none";
     copiedButtonImg.style.display = "inline-block";
 
-    copiedmessage.style.top =
-      "calc(1rem + " + copyButton.getBoundingClientRect().bottom + "px)";
+    copiedmessage.style.top = "calc(1rem + " +
+      copyButton.getBoundingClientRect().bottom + "px)";
     copiedmessage.style.display = "inline-block";
   }
 }

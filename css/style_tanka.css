@@ -99,7 +99,6 @@ p {
 header {
   display: flex;
   align-items: center;
-  min-height: 12rem;
   height: var(--header-height);
   font-family: var(--font-gothic);
   color: var(--main-fg-color);
