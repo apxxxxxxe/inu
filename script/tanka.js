@@ -1,16 +1,32 @@
 const MAX = 8;
-var generatedPoemArray = [];
-var pickedPoemArray = [];
+let generatedPoemArray = [];
+let pickedPoemArray = [];
 
 window.onload = function () {
   recreatePoems();
   adjustHeaderComponent();
 };
 
+function adjustTanka() {
+  const header = document.getElementById("header");
+  const header_p = header.querySelector("p");
+  const heightlimit = header.clientHeight;
+  let size = parseInt(
+    window.getComputedStyle(header_p).getPropertyValue("font-size"),
+  );
+  while (
+    heightlimit <
+      header_p.getBoundingClientRect().height && size > 1
+  ) {
+    size--;
+    header_p.style.fontSize = size + "px";
+  }
+}
+
 function adjustHeaderComponent() {
   const header = document.getElementById("header");
   const header_p = header.querySelector("p");
-  const heightlimit = document.getElementById("header").clientHeight;
+  const heightlimit = header.clientHeight;
   let size = parseInt(
     window.getComputedStyle(header_p).getPropertyValue("font-size"),
   );
@@ -31,42 +47,41 @@ function recreatePoems() {
 function createPoems(num) {
   const baboon = new Baboon();
   generatedPoemArray = [];
-  for (var i = 0; i < num; i++) {
+  for (let i = 0; i < num; i++) {
     generatedPoemArray.push(baboon.create());
   }
 }
 
 function showPoems() {
-  var baboonOutput = document.getElementById("baboonOutput");
+  let baboonOutput = document.getElementById("baboonOutput");
   baboonOutput.innerHTML = "";
-  for (var i = 0; i < generatedPoemArray.length; i++) {
-    baboonOutput.innerHTML +=
-      "<p class='poems'><a class='generatedpoem' href='javascript:pickPoem(" +
-      i +
-      ")'>" +
-      generatedPoemArray[i] +
-      "</a></p>";
+  for (let i = 0; i < generatedPoemArray.length; i++) {
+      let poem = document.createElement("p");
+      poem.appendChild(document.createTextNode(generatedPoemArray[i]));
+      poem.addEventListener('click', {index: i, handleEvent: pickPoem});
+      poem.setAttribute("class","generatedpoem poems");
+      baboonOutput.appendChild(poem);
   }
 
-  var baboonPicked = document.getElementById("baboonPicked");
+  let baboonPicked = document.getElementById("baboonPicked");
   if (pickedPoemArray.length == 0) {
     document.getElementById("copybtn").style.display = "none";
     baboonPicked.innerHTML = "<p id='helpmessage'>短歌をクリックしてピックアップ</p>";
   } else {
     document.getElementById("copybtn").style.display = "inline-block";
     baboonPicked.innerHTML = "";
-    for (var i = 0; i < pickedPoemArray.length; i++) {
-      baboonPicked.innerHTML +=
-        "<p class='poems'><a class='storedpoem' href='javascript:restorePoem(" +
-        i +
-        ")'>" +
-        pickedPoemArray[i] +
-        "</a></p>";
+    for (let i = 0; i < pickedPoemArray.length; i++) {
+      let poem = document.createElement("p");
+      poem.appendChild(document.createTextNode(pickedPoemArray[i]));
+      poem.addEventListener('click', {index: i, handleEvent: restorePoem});
+      poem.setAttribute("class","storedpoem poems");
+      baboonPicked.appendChild(poem);
     }
   }
 }
 
-function pickPoem(index) {
+function pickPoem() {
+  let index = this.index;
   pickedPoemArray.push(generatedPoemArray.splice(index, 1));
   showPoems();
   turnCopyButtonImg(0);
@@ -80,9 +95,9 @@ function restorePoem(index) {
 }
 
 function copyToClipboard() {
-  var textArea = document.getElementById("poemtextarea");
+  let textArea = document.getElementById("poemtextarea");
   textArea.innerHTML = "";
-  for (var poem of pickedPoemArray) {
+  for (let poem of pickedPoemArray) {
     textArea.innerHTML += poem + "\n";
   }
   textArea.select();
@@ -91,10 +106,10 @@ function copyToClipboard() {
 }
 
 function turnCopyButtonImg(push) {
-  var copyButton = document.getElementById("copybtn");
-  var copyButtonImg = document.getElementById("copyimg");
-  var copiedButtonImg = document.getElementById("copiedimg");
-  var copiedmessage = document.getElementById("copiedmessage");
+  let copyButton = document.getElementById("copybtn");
+  let copyButtonImg = document.getElementById("copyimg");
+  let copiedButtonImg = document.getElementById("copiedimg");
+  let copiedmessage = document.getElementById("copiedmessage");
   if (push == 0) {
     copyButton.classList.remove("pushedbtn");
     copyButtonImg.style.display = "inline-block";
